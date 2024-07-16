@@ -1,7 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class GraphLoader {
@@ -37,31 +35,21 @@ public class GraphLoader {
 
     }
 
-    public ArrayList<Friendship> load(String fileName) {
-        ArrayList<Friendship> list = new ArrayList<Friendship>();
+    public Graph load(String fileName) {
+        Graph list = new Graph(accountSize(fileName));
         try {
             File fileOpen = new File(fileName);
             Scanner reader = new Scanner(fileOpen);
             Integer limit = limiter(fileName) + 1;
             for (int i = 0; i < limit; ++i) {
                 if (i != 0) {
-                    list.add(new Friendship(reader.nextInt(), reader.nextInt()));
+                    list.addEdge(reader.nextInt(), reader.nextInt());
                     reader.nextLine();
                 } else {
                     reader.nextLine();
                 }
             }
             reader.close();
-            try {
-                FileWriter writer = new FileWriter("output.txt");
-                for (int i = 0; i < limit - 1; ++i) {
-                    String temp = list.get(i).getAccount() + " " + list.get(i).getIsFriendsWith() + "\n";
-                    writer.write(temp);
-                }
-                writer.close();
-            } catch (IOException e) {
-                System.out.println("Exception encountered");
-            }
 
             return list;
         } catch (FileNotFoundException e) {

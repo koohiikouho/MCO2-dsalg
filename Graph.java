@@ -5,6 +5,14 @@ public class Graph {
 
     private LinkedList<Integer> adj[];
 
+    public LinkedList<Integer>[] getAdj() {
+        return adj;
+    }
+
+    public int getV() {
+        return V;
+    }
+
     Graph(int v) {
         V = v;
         adj = new LinkedList[v];
@@ -52,4 +60,44 @@ public class Graph {
         }
 
     }
+
+    public ArrayList<Integer> showConnection(int source, int destination) {
+        boolean[] visited = new boolean[adj.length];
+        int[] start = new int[adj.length];
+        Queue<Integer> queue = new LinkedList<>();
+
+        queue.add(source);
+        visited[source] = true;
+        start[source] = -1;
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+
+            if (current == destination) {
+                return makePath(start, current);
+
+            }
+            for (int friend : adj[current]) {
+                if (!visited[friend]) {
+                    queue.add(friend);
+                    visited[friend] = true;
+                    start[friend] = current;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private ArrayList<Integer> makePath(int[] start, int destination) {
+        ArrayList<Integer> path = new ArrayList<>();
+        int current = destination;
+
+        while (current != -1) {
+            path.add(0, current);
+            current = start[current];
+        }
+        return path;
+    }
+
 }
