@@ -24,7 +24,7 @@ public class Graph {
         adj[v].add(w);
     }
 
-    private boolean DFSUtil(int v, boolean visited[], int destination, int source) {
+    private boolean dfsHelper(int v, boolean visited[], int destination, int source) {
         visited[v] = true;
         boolean bConnection = false;
         Iterator<Integer> i = adj[v].listIterator();
@@ -38,7 +38,7 @@ public class Graph {
                     return true;
                 }
 
-                bConnection = DFSUtil(n, visited, destination, source);
+                bConnection = dfsHelper(n, visited, destination, source);
                 if (bConnection == true) {
                     connectedTo = n;
                     System.out.println(connectedTo + " is connected to " + v);
@@ -52,36 +52,35 @@ public class Graph {
 
     }
 
-    public void DFS(int v, int destination) {
-
+    public void dfs(int v, int destination) {
         boolean visited[] = new boolean[V];
-        if (DFSUtil(v, visited, destination, v) != true) {
+        if (dfsHelper(v, visited, destination, v) != true) {
             System.out.println("Cannot find connection between " + v + " and " + destination);
         }
 
     }
 
-    public ArrayList<Integer> showConnection(int source, int destination) {
-        boolean[] visited = new boolean[adj.length];
-        int[] start = new int[adj.length];
-        Queue<Integer> queue = new LinkedList<>();
+    public ArrayList<Integer> bfs(int source, int destination) {
+        boolean[] visited = new boolean[V];
+        int[] start = new int[V];
+        Queue<Integer> q = new LinkedList<>();
 
-        queue.add(source);
+        q.add(source);
         visited[source] = true;
         start[source] = -1;
 
-        while (!queue.isEmpty()) {
-            int current = queue.poll();
+        while (!q.isEmpty()) {
+            int current = q.poll();
 
             if (current == destination) {
                 return makePath(start, current);
 
             }
-            for (int friend : adj[current]) {
-                if (!visited[friend]) {
-                    queue.add(friend);
-                    visited[friend] = true;
-                    start[friend] = current;
+            for (int edges : adj[current]) {
+                if (!visited[edges]) {
+                    q.add(edges);
+                    visited[edges] = true;
+                    start[edges] = current;
                 }
             }
         }
@@ -89,13 +88,13 @@ public class Graph {
         return null;
     }
 
-    private ArrayList<Integer> makePath(int[] start, int destination) {
+    private ArrayList<Integer> makePath(int[] source, int destination) {
         ArrayList<Integer> path = new ArrayList<>();
         int current = destination;
 
         while (current != -1) {
             path.add(0, current);
-            current = start[current];
+            current = source[current];
         }
         return path;
     }

@@ -35,7 +35,7 @@ public class FriendList {
             }
         } while (i.hasNext());
         if (notFriends == true)
-            graph.DFS(source, destination);
+            graph.dfs(source, destination);
 
     }
 
@@ -46,7 +46,7 @@ public class FriendList {
         System.out.print("Enter ID of second person: ");
         Integer destination = Integer.parseInt(scan.nextLine());
         ArrayList<Integer> path = new ArrayList<>();
-        path = graph.showConnection(source, destination);
+        path = graph.bfs(source, destination);
         if (path != null) {
             for (int i = 0; i < path.size() - 1; ++i)
                 System.out.println(path.get(i) + " is friends with " + path.get(i + 1));
